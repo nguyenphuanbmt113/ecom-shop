@@ -13,6 +13,9 @@ import { MailModule } from './modules/mail/mail.module';
 import { ProductModule } from './modules/product/product.module';
 import { UserController } from './modules/user/user.controller';
 import { UserModule } from './modules/user/user.module';
+import { CartModule } from './modules/cart/cart.module';
+import { CommentModule } from './modules/comment/comment.module';
+import { TagModule } from './modules/tag/tag.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -36,6 +39,9 @@ import { UserModule } from './modules/user/user.module';
     CouponModule,
     BrandModule,
     ProductModule,
+    CartModule,
+    CommentModule,
+    TagModule,
   ],
   controllers: [AppController, UserController],
   providers: [AppService],

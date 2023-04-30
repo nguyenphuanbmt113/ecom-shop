@@ -15,4 +15,12 @@ export class MailService {
       html: content,
     });
   }
+  async sendEmailConfirmation(email: string, content: string) {
+    await this.mailerService.sendMail({
+      to: email,
+      from: '"Fred Foo 👻" <foo@example.com>',
+      subject: 'Confirm Email!',
+      html: content,
+    });
+  }
 }

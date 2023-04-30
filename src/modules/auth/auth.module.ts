@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { MailModule } from '../mail/mail.module';
+import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UserModule } from '../user/user.module';
-import { JwtModule } from '@nestjs/jwt';
+import { EmailConfirmationService } from './emailConfirmation.service';
 import { JwtStrategy } from './guard/jwt-strategy';
-import { MailModule } from '../mail/mail.module';
 
 @Module({
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, EmailConfirmationService],
+  exports: [AuthService],
   imports: [
     MailModule,
     UserModule,

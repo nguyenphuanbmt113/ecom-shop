@@ -1,9 +1,4 @@
-import {
-  BaseEntity,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-} from 'typeorm';
+import { BaseEntity, CreateDateColumn, Entity } from 'typeorm';
 
 @Entity()
 class BaseClassEntity extends BaseEntity {

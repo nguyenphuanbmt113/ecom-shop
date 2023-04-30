@@ -1,14 +1,29 @@
-import { Body, Controller, Param, Post, Res } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { RegisterDto } from './dto/register.dto';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+  Res,
+} from '@nestjs/common';
 import { Response } from 'express';
-import { LoginUserDto } from './dto/login-user-admin.dto';
+import { AuthService } from './auth.service';
 import { Cookies } from './decorator/get-cookie.decorator';
+import { LoginUserDto } from './dto/login-user-admin.dto';
+import { RegisterDto } from './dto/register.dto';
+import { EmailConfirmationService } from './emailConfirmation.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authsService: AuthService) {}
+  constructor(
+    private authsService: AuthService,
+    private readonly emailConfirmationService: EmailConfirmationService,
+  ) {}
 
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   async logIn(
     @Body() data: LoginUserDto,
@@ -41,5 +56,23 @@ export class AuthController {
     @Body('new-new_password') new_password: string,
   ) {
     return this.authsService.resetPassword(password_token, new_password);
+  }
+
+  @Post('email/register')
+  @HttpCode(HttpStatus.OK)
+  async register_email(@Body() data: RegisterDto) {
+    const user = await this.authsService.register(data);
+    await this.emailConfirmationService.sendVerificationLink(data.email);
+    return user;
+  }
+
+  @Get('confirm-emails')
+  async confirm(@Query('token') token: string) {
+    console.log('token:', token);
+    const email = await this.emailConfirmationService.decodeConfirmationToken(
+      token,
+    );
+    await this.emailConfirmationService.confirmEmail(email);
+    return 'okela confirm email';
   }
 }

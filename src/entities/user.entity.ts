@@ -1,6 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import BaseClassEntity from './base-entity.entity';
 import * as crypto from 'crypto';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import BaseClassEntity from './base-entity.entity';
+import Cart from './cart.entity';
+import Comment from './comment.entity';
 @Entity()
 class User extends BaseClassEntity {
   @PrimaryGeneratedColumn()
@@ -42,6 +44,9 @@ class User extends BaseClassEntity {
   @Column({ nullable: true })
   public passwordResetExpire: Date;
 
+  @Column({ default: false })
+  public isEmailConfirmed: boolean;
+
   public createPasswordToken() {
     const resetToken = crypto.randomBytes(32).toString('hex');
     console.log('resetToken:', resetToken);
@@ -53,6 +58,12 @@ class User extends BaseClassEntity {
     console.log('this.passwordResetExpire :', this.passwordResetExpire);
     return resetToken;
   }
+
+  @OneToMany(() => Cart, (cart) => cart.user)
+  carts: Cart[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 }
 
 export default User;

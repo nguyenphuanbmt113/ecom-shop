@@ -82,4 +82,13 @@ export class UserService {
     user.isBlocked = false;
     await this.usersRepo.save(user);
   }
+
+  async markEmailAsConfirmed(email: string) {
+    return this.usersRepo.update(
+      { email },
+      {
+        isEmailConfirmed: true,
+      },
+    );
+  }
 }

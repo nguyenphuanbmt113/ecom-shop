@@ -1,3 +1,4 @@
+import slugify from 'slugify';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -5,13 +6,16 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import BaseClassEntity from './base-entity.entity';
 import Brand from './brand.entity';
+import Cart from './cart.entity';
 import Category from './category.entity';
 import Color from './color.entity';
-import slugify from 'slugify';
+import Comment from './comment.entity';
+import TagProduct from './tagProduct.entity';
 @Entity()
 class Product extends BaseClassEntity {
   @PrimaryGeneratedColumn()
@@ -38,8 +42,14 @@ class Product extends BaseClassEntity {
   @Column()
   public thumb: string;
 
-  @Column()
-  public image: string;
+  @Column({ nullable: true })
+  public image1: string;
+
+  @Column({ nullable: true })
+  public image2: string;
+
+  @Column({ nullable: true })
+  public imag3: string;
 
   @Column()
   public brandId: number;
@@ -70,6 +80,15 @@ class Product extends BaseClassEntity {
   })
   @JoinColumn()
   category: Category;
+
+  @OneToMany(() => Cart, (cart) => cart.product)
+  carts: Cart[];
+
+  @OneToMany(() => Comment, (comment) => comment.product)
+  comments: Comment[];
+
+  @OneToMany(() => TagProduct, (tagproduct) => tagproduct.product)
+  tagProducts: TagProduct[];
 }
 
 export default Product;
