@@ -6,7 +6,15 @@ export class TagController {
   constructor(private tagsService: TagService) {}
 
   @Post('create')
-  createUser(@Body() data: any) {
+  createTag(@Body() data: any) {
     return this.tagsService.createTag(data);
+  }
+
+  @Post('apply-to-product')
+  applyTagToProduct(@Body() data: any) {
+    const { tagIds, productId } = data;
+    console.log('productId:', productId);
+    console.log('tagIds:', tagIds);
+    return this.tagsService.applyTagsToProduct(tagIds, productId);
   }
 }
