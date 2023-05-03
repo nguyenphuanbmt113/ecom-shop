@@ -9,19 +9,16 @@ class Cart extends BaseClassEntity {
   id: number;
 
   @Column()
-  userId: number;
+  userId!: number;
 
   @Column()
-  productId: number;
+  productId!: number;
 
   @Column({ nullable: true })
-  count: number;
+  quantity: number;
 
   @Column({ nullable: true })
-  totalAfterDiscount: number;
-
-  @Column({ nullable: true })
-  priceProduct: number;
+  total: number;
 
   @ManyToOne(() => User, (user) => user.carts)
   user: User;

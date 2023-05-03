@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { JWTAuthGuard } from '../auth/guard/jwt.guard';
 import { RoleGuardAdmin } from '../auth/guard/checkrole.guard';
@@ -12,12 +12,12 @@ export class CartController {
   @Post('create')
   createUser(@Body() body: any, @User() user: any) {
     const userId = user.userId;
-    const { count, productId } = body;
-    return this.cartService.addtoCart(productId, userId, count);
+    const { quantity, productId } = body;
+    return this.cartService.addtoCart(productId, userId, quantity);
   }
 
-  @Get(':id')
-  findAllById(@Param('id') id: number) {
-    return this.cartService.getCartByUser(id);
-  }
+  // @Get(':id')
+  // findAllById(@Param('id') id: number) {
+  //   return this.cartService.getCartByUser(id);
+  // }
 }
